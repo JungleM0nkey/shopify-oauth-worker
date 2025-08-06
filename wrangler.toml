@@ -1,0 +1,36 @@
+name = "cf-oauth-worker"
+main = "worker.js"
+compatibility_date = "2025-08-06"
+
+# Serve static files from pages directory
+[site]
+bucket = "./pages"
+
+# KV Namespaces for storing shop data
+[[kv_namespaces]]
+binding = "SHOPS"
+id = ""
+
+[[kv_namespaces]]
+binding = "AUTH_STATES"
+id = ""
+
+[[kv_namespaces]]
+binding = "API_KEYS"
+id = ""
+
+# Environment variables
+[vars]
+SHOPIFY_APP_HANDLE = ""
+SHOPIFY_API_VERSION = ""
+OAUTH_SCOPES = ""
+APP_URL = ""
+
+# This is for worker logs to work
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+# Secrets (set via wrangler secret put)
+# SHOPIFY_API_KEY
+# SHOPIFY_API_SECRET

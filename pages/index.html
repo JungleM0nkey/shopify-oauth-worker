@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OAuth Worker Deployer</title>
+  <link rel="stylesheet" href="https://unpkg.com/@shopify/polaris@12.0.0/build/esm/styles.css">
+  <style>
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+    .status { margin-top: 1rem; padding: 1rem; border-radius: 0.5rem; }
+    .success { background: #f0fdf4; border: 1px solid #86efac; color: #166534; }
+    .error { background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; }
+    .info { background: #eff6ff; border: 1px solid #93c5fd; color: #1e40af; }
+    .form-group { margin-bottom: 1.5rem; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+    input { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; }
+    button { background: #008060; color: white; padding: 0.75rem 1.5rem; border: none; border-radius: 0.375rem; cursor: pointer; font-size: 1rem; }
+    button:hover { background: #006e4e; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .code { background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Deploy OAuth Worker</h1>
+    
+    <div class="status info">
+      <p>Deploy an OAuth proxy worker to enable Chrome extension authentication with this Shopify store.</p>
+    </div>
+
+    <form id="deploy-form">
+      <div class="form-group">
+        <label for="cfToken">Cloudflare API Token</label>
+        <input type="password" id="cfToken" name="cfToken" required 
+               placeholder="Your Cloudflare API token">
+        <small>Create at: dash.cloudflare.com → My Profile → API Tokens</small>
+      </div>
+
+      <div class="form-group">
+        <label for="cfAccountId">Cloudflare Account ID</label>
+        <input type="text" id="cfAccountId" name="cfAccountId" required 
+               placeholder="Found in Cloudflare dashboard sidebar">
+      </div>
+
+      <div class="form-group">
+        <label for="extensionId">Chrome Extension ID</label>
+        <input type="text" id="extensionId" name="extensionId" required 
+               placeholder="From chrome://extensions">
+      </div>
+
+      <div class="form-group">
+        <label for="workerName">Worker Name (optional)</label>
+        <input type="text" id="workerName" name="workerName" 
+               placeholder="shopify-oauth-proxy">
+      </div>
+
+      <button type="submit" id="deploy-btn">Deploy Worker</button>
+    </form>
+
+    <div id="result"></div>
+
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e5e7eb;">
+      <h2>Setup Instructions</h2>
+      <ol>
+        <li>Get your Cloudflare API token with Workers edit permissions</li>
+        <li>Find your Account ID in the Cloudflare dashboard</li>
+        <li>Get your Chrome extension ID from chrome://extensions</li>
+        <li>Click Deploy Worker</li>
+        <li>Copy the worker URL to your extension configuration</li>
+      </ol>
+    </div>
+  </div>
+
+  <script type="module">
+    // Get Shopify session parameters
+    const params = new URLSearchParams(window.location.search);
+    const shop = params.get('shop');
+    const host = params.get('host');
+
+    // Initialize App Bridge if in Shopify admin
+    let sessionToken = null;
+    if (host) {
+      import('https://unpkg.com/@shopify/app-bridge@3/index.js').then(({ createApp }) => {
+        const app = createApp({
+          apiKey: window.SHOPIFY_API_KEY || '__API_KEY__',
+          host: host,
+        });
+        
+        // Get session token for authenticated requests
+        app.idToken().then(token => {
+          sessionToken = token;
+        });
+      });
+    }
+
+    document.getElementById('deploy-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const button = document.getElementById('deploy-btn');
+      const resultDiv = document.getElementById('result');
+      
+      button.disabled = true;
+      button.textContent = 'Deploying...';
+      
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      data.shop = shop;
+      
+      try {
+        const response = await fetch('/api/deploy', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': sessionToken ? `Bearer ${sessionToken}` : '',
+          },
+          body: JSON.stringify(data),
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          resultDiv.innerHTML = `
+            <div class="status success">
+              <h3>Worker Deployed Successfully!</h3>
+              <p>Worker URL: <span class="code">${result.workerUrl}</span></p>
+              <p>Add this URL to your Chrome extension configuration.</p>
+              <details style="margin-top: 1rem;">
+                <summary>Extension Configuration</summary>
+                <pre class="code" style="margin-top: 0.5rem; padding: 1rem; overflow-x: auto;">
+const OAUTH_CONFIG = {
+  workerUrl: '${result.workerUrl}',
+  shop: '${shop}'
+};</pre>
+              </details>
+            </div>
+          `;
+        } else {
+          resultDiv.innerHTML = `
+            <div class="status error">
+              <h3>Deployment Failed</h3>
+              <p>${result.error}</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `
+          <div class="status error">
+            <h3>Error</h3>
+            <p>${error.message}</p>
+          </div>
+        `;
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Deploy Worker';
+      }
+    });
+  </script>
+</body>
+</html>

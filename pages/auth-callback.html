@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authenticating...</title>
+</head>
+<body>
+  <h1>Completing authentication...</h1>
+  <script>
+    // Handle OAuth callback and redirect to app
+    const params = new URLSearchParams(window.location.search);
+    const shop = params.get('shop');
+    if (shop) {
+      // Redirect back to app in Shopify admin
+      window.location.href = `https://${shop}/admin/apps/${window.location.hostname}`;
+    }
+  </script>
+</body>
+</html>
