@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Shopify Store Manager",
+  "version": "1.0.0",
+  "description": "Connect to your Shopify store",
+  
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  
+  "host_permissions": [
+    "https://*.myshopify.com/*",
+    "https://*.workers.dev/*"
+  ],
+  
+  "action": {
+    "default_popup": "popup.html"
+  },
+  
+  "background": {
+    "service_worker": "background.js"
+  }
+}

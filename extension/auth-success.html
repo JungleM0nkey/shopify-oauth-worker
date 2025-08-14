@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authentication Successful</title>
+  <style>
+    body {
+      font-family: system-ui;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .message {
+      text-align: center;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="message">
+    <h1>✓ Authentication Successful</h1>
+    <p>You can close this tab.</p>
+  </div>
+  <script>
+    // Tab will be closed by the extension
+    setTimeout(() => {
+      window.close();
+    }, 3000);
+  </script>
+</body>
+</html>
