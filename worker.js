@@ -5,6 +5,7 @@ import { validateEnvironment } from './lib/validation.js';
 import { getCorsHeaders } from './lib/utils.js';
 import { routeRequest } from './lib/handlers.js';
 import { handleError } from './lib/error-handler.js';
+import { rateLimitByIP } from './lib/rate-limit.js';
 
 // Main Worker Export
 export default {
@@ -15,12 +16,22 @@ export default {
       
       const url = new URL(request.url);
       
-      // CORS headers for extension support
-      const corsHeaders = getCorsHeaders();
+      // Basic rate limiting by IP for all requests
+      const ipRateLimit = await rateLimitByIP(request, env);
+      if (ipRateLimit) return ipRateLimit;
+      
+      // CORS headers for extension support with origin validation
+      const origin = request.headers.get('origin');
+      const corsHeaders = getCorsHeaders(env, origin);
       
       // Handle preflight requests
       if (request.method === 'OPTIONS') {
-        return new Response(null, { headers: corsHeaders });
+        return new Response(null, { 
+          headers: {
+            ...corsHeaders,
+            'Access-Control-Max-Age': '86400'
+          }
+        });
       }
       
       // Route request to appropriate handler
