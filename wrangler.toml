@@ -25,6 +25,10 @@ SHOPIFY_APP_HANDLE = ""
 SHOPIFY_API_VERSION = ""
 OAUTH_SCOPES = ""
 APP_URL = ""
+# Security: Comma-separated list of allowed origins for CORS
+# Examples: "https://admin.shopify.com,https://*.myshopify.com" 
+# Use "*" for development only
+ALLOWED_ORIGINS = "https://admin.shopify.com,https://*.myshopify.com"
 
 # This is for worker logs to work
 [observability]
