@@ -1,5 +1,5 @@
-import { ConfigurationError } from './errors.js';
-import { ERROR_MESSAGES } from './constants.js';
+import { ConfigurationError } from '../errors/index.js';
+import { ERROR_MESSAGES } from '../utils/constants.js';
 
 // Environment Validation
 export function validateEnvironment(env) {

@@ -1,10 +1,10 @@
 // Storefront OAuth Gateway - Main Worker File
 // Modular architecture for better maintainability
 
-import { validateEnvironment } from './lib/validation.js';
-import { getCorsHeaders } from './lib/utils.js';
-import { routeRequest } from './lib/handlers.js';
-import { handleError } from './lib/error-handler.js';
+import { validateEnvironment } from './src/validation/index.js';
+import { getCorsHeaders } from './src/utils/index.js';
+import { routeRequest } from './src/handlers/router.js';
+import { handleError } from './src/errors/error-handler.js';
 
 // Main Worker Export
 export default {

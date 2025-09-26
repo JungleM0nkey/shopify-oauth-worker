@@ -1,4 +1,4 @@
-import { ConfigurationError, ValidationError } from './errors.js';
+import { ConfigurationError, ValidationError } from './index.js';
 
 // Error Handler
 export function handleError(error) {
