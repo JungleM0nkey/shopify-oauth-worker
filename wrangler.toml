@@ -19,12 +19,21 @@ id = ""
 binding = "API_KEYS"
 id = ""
 
+# Optional: Rate limiting namespace (uncomment and add ID to enable)
+# [[kv_namespaces]]
+# binding = "RATE_LIMIT"
+# id = ""
+
 # Environment variables
 [vars]
 SHOPIFY_APP_HANDLE = ""
 SHOPIFY_API_VERSION = ""
 OAUTH_SCOPES = ""
 APP_URL = ""
+NODE_ENV = "production"
+# Comma-separated list of allowed origins for CORS (production)
+# ALLOWED_ORIGINS = "https://example.com,https://app.example.com"
+# CSP_POLICY = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.shopify.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://*.myshopify.com; frame-ancestors https://*.myshopify.com https://admin.shopify.com;"
 
 # This is for worker logs to work
 [observability]
