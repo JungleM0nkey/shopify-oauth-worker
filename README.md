@@ -68,17 +68,71 @@ SHOPIFY_APP_HANDLE = "your-app-handle"
 APP_URL = "https://your-worker.workers.dev"
 OAUTH_SCOPES="read_orders"
 SHOPIFY_API_VERSION="2025-07"
+ENVIRONMENT="production"
 ```
+
+### Production Secrets
+
+Set these secrets for production deployment:
+
+```bash
+# Required
+wrangler secret put SHOPIFY_API_KEY
+wrangler secret put SHOPIFY_API_SECRET
+
+# Recommended for production
+wrangler secret put ENCRYPTION_KEY  # For encrypting sensitive KV data
+
+# Optional monitoring integrations
+wrangler secret put SENTRY_DSN      # For error tracking
+wrangler secret put SENTRY_PROJECT  # Sentry project ID
+wrangler secret put DATADOG_API_KEY # For logs and monitoring
+```
+
+## Production Features
+
+### 🔐 Data Encryption
+- Sensitive data (access tokens, API keys) encrypted at rest in KV storage
+- Uses AES-GCM encryption with Web Crypto API
+- Backward compatible with existing unencrypted data
+
+### 📊 Monitoring & Observability
+- Structured JSON logging with request tracing
+- Performance metrics collection
+- Error tracking with Sentry/Datadog integration
+- Request correlation IDs for debugging
+
+### 🏥 Health Checks
+- Multiple health check endpoints for different monitoring needs
+- Kubernetes-style readiness and liveness probes
+- Deep health checks with dependency validation
+
+### 🛡️ Security & Rate Limiting
+- Built-in rate limiting with different policies per endpoint type
+- DDoS protection with suspicious activity detection
+- Enhanced error handling with proper HTTP status codes
+
+### 📈 Performance Monitoring
+- Request duration tracking
+- Shopify API rate limit header passthrough
+- Automatic retry logic for webhook registration
 
 ## API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | App entry point (embedded or landing page) |
-| `/auth` | GET | Initiate OAuth flow |
-| `/auth/callback` | GET | OAuth callback handler |
-| `/api/auth` | POST | Generate API key for extensions |
-| `/api/proxy` | POST | Proxy requests to Shopify API |
+| Endpoint | Method | Description | Rate Limit |
+|----------|--------|-------------|------------|
+| `/` | GET | App entry point (embedded or landing page) | 100/min |
+| `/auth` | GET | Initiate OAuth flow | 20/hour |
+| `/auth/callback` | GET | OAuth callback handler | 20/hour |
+| `/api/auth` | POST | Generate API key for extensions | 100/min |
+| `/api/proxy` | POST | Proxy requests to Shopify API | 100/min |
+| `/health` | GET | Basic health check | 60/min |
+| `/health/ready` | GET | Readiness probe (Kubernetes) | 60/min |
+| `/health/live` | GET | Liveness probe (Kubernetes) | 60/min |
+| `/health/deep` | GET | Deep health check with dependencies | 60/min |
+| `/status` | GET | Detailed status information | 60/min |
+| `/metrics` | GET | Performance metrics (Prometheus format) | 60/min |
+| `/webhooks/*` | POST | Shopify webhook handlers | 1000/min |
 
 ## Extension Integration
 

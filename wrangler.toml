@@ -25,8 +25,9 @@ SHOPIFY_APP_HANDLE = ""
 SHOPIFY_API_VERSION = ""
 OAUTH_SCOPES = ""
 APP_URL = ""
+ENVIRONMENT = "production"
 
-# This is for worker logs to work
+# Enhanced observability for production
 [observability]
 enabled = true
 head_sampling_rate = 1
@@ -34,3 +35,7 @@ head_sampling_rate = 1
 # Secrets (set via wrangler secret put)
 # SHOPIFY_API_KEY
 # SHOPIFY_API_SECRET
+# ENCRYPTION_KEY - For encrypting sensitive KV data
+# SENTRY_DSN - For error tracking (optional)
+# SENTRY_PROJECT - Sentry project ID (optional)
+# DATADOG_API_KEY - For monitoring and logs (optional)
