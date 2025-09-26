@@ -1,5 +1,5 @@
-import { AuthenticationError } from './errors.js';
-import { ERROR_MESSAGES } from './constants.js';
+import { AuthenticationError } from '../errors/index.js';
+import { ERROR_MESSAGES } from '../utils/constants.js';
 
 // Exchange OAuth Code for Access Token
 export async function exchangeCodeForToken(shop, code, env) {

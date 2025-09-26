@@ -1,8 +1,39 @@
 
+# Shopify OAuth Worker
 
 A Cloudflare Worker that provides OAuth authentication and API gateway for browser extensions to connect with Shopify storefronts.
 
 I built this to solve an iframe limitation chromium extensions have with oauth, however this will work with other clients as well.
+
+## Features
+
+- 🔐 **Secure OAuth Flow**: Complete OAuth 2.0 implementation with HMAC verification
+- 🔑 **API Key Management**: Generate and manage secure API keys for extensions
+- 🌐 **CORS Support**: Browser-friendly endpoints for extension integration
+- 📦 **Shopify API Proxy**: Secure proxy for all Shopify API calls
+- 🔒 **GDPR Compliance**: Built-in webhook handlers for data privacy
+- ⚡ **Edge Performance**: Deployed on Cloudflare's global network
+
+## Architecture
+
+The codebase is organized into modular components for maintainability:
+
+```
+src/
+├── errors/          # Error handling and custom error classes
+├── handlers/        # Request handlers for different endpoints
+├── shopify/         # Shopify API integration
+├── templates/       # HTML template generation
+├── utils/           # Utility functions and constants
+└── validation/      # Input validation functions
+
+tests/               # Test suite
+docs/                # Documentation
+deployment/          # Deployment scripts and configuration
+types/               # TypeScript definitions
+```
+
+## Quick Start
 
 
 1. **Clone the repository**
@@ -69,6 +100,36 @@ APP_URL = "https://your-worker.workers.dev"
 OAUTH_SCOPES="read_orders"
 SHOPIFY_API_VERSION="2025-07"
 ```
+
+## Development
+
+### Running Tests
+
+```bash
+npm test
+# or
+node tests/run-tests.js
+```
+
+### Local Development
+
+```bash
+# Start development server
+npm run dev
+# or
+wrangler dev
+```
+
+### Deployment
+
+```bash
+# Deploy using script
+npm run deploy
+# or manually
+./deployment/deploy.sh
+```
+
+For detailed setup instructions, see [`deployment/setup.md`](deployment/setup.md).
 
 ## API Endpoints
 
