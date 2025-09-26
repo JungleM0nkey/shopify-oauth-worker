@@ -1,0 +1,39 @@
+{
+  "name": "shopify-oauth-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker that provides OAuth authentication and API gateway for browser extensions to connect with Shopify storefronts",
+  "main": "worker.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler publish",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check && npm run test"
+  },
+  "keywords": [
+    "shopify",
+    "oauth",
+    "cloudflare-worker",
+    "browser-extension",
+    "api-gateway"
+  ],
+  "author": "JungleM0nkey",
+  "license": "MIT",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "undici": "^6.0.0",
+    "vitest": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
