@@ -8,7 +8,7 @@ import { handleError } from './lib/error-handler.js';
 
 // Main Worker Export
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env, _ctx) {
     try {
       // Validate environment configuration
       validateEnvironment(env);

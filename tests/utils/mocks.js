@@ -11,7 +11,7 @@ export function createMockKV() {
   
   return {
     get: vi.fn(async (key) => storage.get(key) || null),
-    put: vi.fn(async (key, value, options = {}) => {
+    put: vi.fn(async (key, value, _options = {}) => {
       storage.set(key, value);
     }),
     delete: vi.fn(async (key) => storage.delete(key)),
@@ -57,12 +57,12 @@ export function createMockRequest(url, options = {}) {
  * @param {Object} options - Response options
  * @returns {Response} Mock Response
  */
-export function createMockResponse(body, options = {}) {
+export function createMockResponse(body, _options = {}) {
   return new Response(JSON.stringify(body), {
-    status: options.status || 200,
+    status: _options.status || 200,
     headers: {
       'Content-Type': 'application/json',
-      ...options.headers
+      ..._options.headers
     }
   });
 }
@@ -73,7 +73,7 @@ export function createMockResponse(body, options = {}) {
  * @param {Object} options - Request options
  * @returns {Promise<Response>} Mock response
  */
-export function mockFetch(url, options = {}) {
+export function mockFetch(url, _options = {}) {
   // Default successful Shopify API responses
   if (url.includes('/admin/oauth/access_token')) {
     return Promise.resolve(createMockResponse({

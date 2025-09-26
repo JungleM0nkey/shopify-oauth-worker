@@ -243,7 +243,9 @@ class ShopifyAuthClient {
       
       // Set up listener for tab updates
       const listener = async (updatedTabId, _, updatedTab) => {
-        if (updatedTabId !== tabId || resolved) return;
+        if (updatedTabId !== tabId || resolved) {
+          return;
+        }
         
         // Check if redirected back to app in Shopify admin
         if (updatedTab.url && updatedTab.url.includes(`${shop}/admin/apps/`)) {
@@ -316,12 +318,16 @@ class ShopifyAuthClient {
       let resolved = false;
       
       const listener = async (updatedWindowId) => {
-        if (updatedWindowId !== windowId || resolved) return;
+        if (updatedWindowId !== windowId || resolved) {
+          return;
+        }
         
         // Check tabs in the window
         this.browser.tabs.query({ windowId }, async (tabs) => {
           const tab = tabs[0];
-          if (!tab) return;
+          if (!tab) {
+            return;
+          }
           
           if (tab.url && tab.url.includes(`${shop}/admin/apps/`)) {
             resolved = true;
@@ -505,7 +511,9 @@ class ShopifyAuthClient {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = ShopifyAuthClient;
 } else if (typeof define === 'function' && define.amd) {
-  define([], function() { return ShopifyAuthClient; });
+  define([], function() {
+    return ShopifyAuthClient; 
+  });
 } else {
   window.ShopifyAuthClient = ShopifyAuthClient;
 }
