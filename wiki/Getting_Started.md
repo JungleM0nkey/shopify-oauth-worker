@@ -28,8 +28,8 @@ Here's a quick example of how to initiate an OAuth flow using the `shopify-oauth
 
 ```javascript
 fetch('/oauth/start')
-  .then(response => response.json())
-  .then(data => console.log(data));
+  .then((response) => response.json())
+  .then((data) => console.log(data));
 ```
 
 This fetch call starts the OAuth process, redirecting users to Shopify for authentication.

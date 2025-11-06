@@ -22,9 +22,13 @@ id = ""
 # Environment variables
 [vars]
 SHOPIFY_APP_HANDLE = ""
-SHOPIFY_API_VERSION = ""
-OAUTH_SCOPES = ""
+SHOPIFY_API_VERSION = "2024-01"
+OAUTH_SCOPES = "read_products,write_products"
 APP_URL = ""
+# CORS Configuration - comma-separated list of allowed origins
+# Use "*" for development only. For production, specify exact origins:
+# ALLOWED_ORIGINS = "https://example.com,https://app.example.com"
+ALLOWED_ORIGINS = "*"
 
 # This is for worker logs to work
 [observability]

@@ -5,11 +5,18 @@
   "main": "worker.js",
   "type": "module",
   "scripts": {
-    "test": "node tests/run-tests.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "deploy": "./deployment/deploy.sh",
     "dev": "wrangler dev",
     "publish": "wrangler publish",
-    "lint": "echo 'No linting configured'"
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "validate": "npm run lint && npm run format:check && npm run test",
+    "prepare": "husky install"
   },
   "keywords": [
     "shopify",
@@ -29,6 +36,22 @@
   "engines": {
     "node": ">=16.0.0"
   },
-  "devDependencies": {},
-  "dependencies": {}
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.0.0",
+    "eslint": "^8.57.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {},
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  }
 }

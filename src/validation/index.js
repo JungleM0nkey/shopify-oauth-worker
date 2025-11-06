@@ -5,13 +5,13 @@ import { ERROR_MESSAGES } from '../utils/constants.js';
 export function validateEnvironment(env) {
   const required = ['SHOPIFY_API_KEY', 'SHOPIFY_API_SECRET', 'SHOPS', 'AUTH_STATES', 'API_KEYS'];
   const missing = [];
-  
+
   for (const key of required) {
     if (!env[key]) {
       missing.push(key);
     }
   }
-  
+
   if (missing.length > 0) {
     throw new ConfigurationError(`${ERROR_MESSAGES.MISSING_ENV}: ${missing.join(', ')}`);
   }
@@ -19,8 +19,15 @@ export function validateEnvironment(env) {
 
 // Shop Domain Validation
 export function isValidShopDomain(shop) {
-  if (!shop) return false;
-  return /^[a-zA-Z0-9][a-zA-Z0-9-]*\.myshopify\.com$/.test(shop);
+  if (!shop) {
+    return false;
+  }
+
+  // Updated regex to prevent trailing hyphens
+  // Format: alphanumeric start, followed by alphanumeric or hyphen groups (no trailing hyphens)
+  // Examples: shop.myshopify.com, my-shop.myshopify.com, shop-123.myshopify.com
+  // Invalid: -shop.myshopify.com, shop-.myshopify.com, shop--.myshopify.com
+  return /^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?\.myshopify\.com$/.test(shop);
 }
 
 // Embedded Context Validation
@@ -30,12 +37,14 @@ export function isValidEmbeddedContext(embedded, host, hmac) {
 
 // Host Parameter Validation
 export function isValidHost(host, shop) {
-  if (!host) return false;
-  
+  if (!host) {
+    return false;
+  }
+
   try {
     // Decode base64 host parameter (URL-safe base64)
     const decodedHost = atob(host.replace(/-/g, '+').replace(/_/g, '/'));
-    
+
     // The host should be in format: "shop-domain.myshopify.com/admin"
     // Just check if it contains the shop domain
     const shopDomain = shop.replace('https://', '').replace('http://', '').split('/')[0];

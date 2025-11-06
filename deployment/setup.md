@@ -16,7 +16,7 @@ wrangler login
 
 # Create KV namespaces
 wrangler kv:namespace create "SHOPS"
-wrangler kv:namespace create "AUTH_STATES"  
+wrangler kv:namespace create "AUTH_STATES"
 wrangler kv:namespace create "API_KEYS"
 ```
 

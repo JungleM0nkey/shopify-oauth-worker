@@ -21,27 +21,33 @@ src/
 ## Core Modules
 
 ### Errors (`src/errors/`)
+
 - **index.js**: Custom error classes (AuthenticationError, ValidationError, ConfigurationError)
 - **error-handler.js**: Central error handling with appropriate responses
 
 ### Handlers (`src/handlers/`)
+
 - **router.js**: Main request routing logic
 - **oauth.js**: OAuth flow handling (initiation and callback)
 - **api.js**: Extension authentication and API proxy
 - **webhooks.js**: Shopify webhook processing
 
 ### Shopify (`src/shopify/`)
+
 - **api.js**: Shopify API interactions (token exchange, data storage, webhooks)
 
 ### Templates (`src/templates/`)
+
 - **index.js**: HTML template generation for various pages
 
 ### Utils (`src/utils/`)
+
 - **constants.js**: Application constants and error messages
 - **index.js**: General utility functions
 - **hmac.js**: HMAC verification for security
 
 ### Validation (`src/validation/`)
+
 - **index.js**: Input validation functions
 
 ## Key Features
@@ -64,6 +70,7 @@ src/
 ## Testing
 
 Run tests with:
+
 ```bash
 node tests/run-tests.js
 ```
@@ -71,6 +78,7 @@ node tests/run-tests.js
 ## Deployment
 
 The worker can be deployed using Wrangler:
+
 ```bash
 wrangler publish
 ```

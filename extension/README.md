@@ -35,11 +35,13 @@ const products = await auth.get('/products.json');
 ## API Reference
 
 ### Constructor
+
 ```javascript
-new ShopifyAuthClient(workerUrl, options)
+new ShopifyAuthClient(workerUrl, options);
 ```
 
 Parameters:
+
 - `workerUrl` (string) - Cloudflare Worker URL
 - `options` (object) - Optional configuration
   - `debug` (boolean) - Enable debug logging
@@ -52,7 +54,7 @@ Parameters:
 - `authenticate(shop)` - Start OAuth flow or use cached token
 - `api(endpoint, options)` - Make authenticated API call
 - `get(endpoint)` - GET request
-- `post(endpoint, data)` - POST request  
+- `post(endpoint, data)` - POST request
 - `put(endpoint, data)` - PUT request
 - `delete(endpoint)` - DELETE request
 - `isAuthenticated()` - Check auth status
@@ -62,6 +64,7 @@ Parameters:
 ## Implementation Examples
 
 ### Basic Setup
+
 ```javascript
 const auth = new ShopifyAuthClient('https://your-worker.workers.dev');
 
@@ -73,13 +76,14 @@ const products = await auth.get('/products.json?limit=10');
 ```
 
 ### Multi-shop Management
+
 ```javascript
 class MultiShopManager {
   constructor(workerUrl) {
     this.clients = new Map();
     this.workerUrl = workerUrl;
   }
-  
+
   async getClient(shop) {
     if (!this.clients.has(shop)) {
       const client = new ShopifyAuthClient(this.workerUrl);
@@ -94,14 +98,12 @@ class MultiShopManager {
 ## Chrome Extension Integration
 
 ### manifest.json (V3)
+
 ```json
 {
   "manifest_version": 3,
   "permissions": ["storage", "tabs"],
-  "host_permissions": [
-    "https://your-worker.workers.dev/*",
-    "https://*.myshopify.com/*"
-  ],
+  "host_permissions": ["https://your-worker.workers.dev/*", "https://*.myshopify.com/*"],
   "background": {
     "service_worker": "background.js",
     "type": "module"
@@ -110,6 +112,7 @@ class MultiShopManager {
 ```
 
 ### background.js
+
 ```javascript
 import ShopifyAuthClient from './auth.js';
 
@@ -117,9 +120,10 @@ const auth = new ShopifyAuthClient('https://your-worker.workers.dev');
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'authenticate') {
-    auth.authenticate(request.shop)
-      .then(result => sendResponse({ success: true, result }))
-      .catch(error => sendResponse({ success: false, error: error.message }));
+    auth
+      .authenticate(request.shop)
+      .then((result) => sendResponse({ success: true, result }))
+      .catch((error) => sendResponse({ success: false, error: error.message }));
     return true;
   }
 });
@@ -130,14 +134,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 ### Common Issues
 
 - **Auth tab closes immediately**: Check worker URL and shop domain format
-- **Token expired**: Client auto-refreshes tokens, use `auth.logout()` if needed  
+- **Token expired**: Client auto-refreshes tokens, use `auth.logout()` if needed
 - **CORS errors**: Add worker URL to `host_permissions` in manifest
 - **Rate limiting**: Client auto-retries with exponential backoff
 
 ### Debug Mode
+
 ```javascript
 const auth = new ShopifyAuthClient(workerUrl, { debug: true });
 ```
 
 ## Browser Support
+
 Chrome, Firefox, Edge (Manifest V2 & V3)
