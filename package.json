@@ -37,12 +37,12 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
-    "@vitest/coverage-v8": "^1.0.0",
+    "@vitest/coverage-v8": "^4.0.7",
     "eslint": "^8.57.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
     "prettier": "^3.2.0",
-    "vitest": "^1.0.0"
+    "vitest": "^4.0.7"
   },
   "dependencies": {},
   "lint-staged": {
