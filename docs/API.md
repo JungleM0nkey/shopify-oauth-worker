@@ -5,17 +5,21 @@
 ### Authentication
 
 #### `GET /auth`
+
 Initiates OAuth flow for Shopify store installation.
 
 **Parameters:**
+
 - `shop` (required): Shopify store domain (e.g., `store.myshopify.com`)
 
 **Response:** Redirects to Shopify OAuth authorization page
 
 #### `GET /auth/callback`
+
 Handles OAuth callback from Shopify.
 
 **Parameters:**
+
 - `code`: Authorization code from Shopify
 - `shop`: Shop domain
 - `state`: State parameter for CSRF protection
@@ -26,9 +30,11 @@ Handles OAuth callback from Shopify.
 ### Extension API
 
 #### `POST /api/auth`
+
 Generates API key for extension authentication.
 
 **Request Body:**
+
 ```json
 {
   "shop": "store.myshopify.com"
@@ -36,6 +42,7 @@ Generates API key for extension authentication.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -45,12 +52,15 @@ Generates API key for extension authentication.
 ```
 
 #### `POST /api/proxy`
+
 Proxies requests to Shopify API.
 
 **Headers:**
+
 - `Authorization: Bearer {api_key}`
 
 **Request Body:**
+
 ```json
 {
   "endpoint": "/products.json",
@@ -64,20 +74,25 @@ Proxies requests to Shopify API.
 ### Webhooks
 
 #### `POST /webhooks/customers/redact`
+
 Handles customer data redaction requests (GDPR compliance).
 
 #### `POST /webhooks/shop/redact`
+
 Handles shop data redaction requests.
 
 #### `POST /webhooks/customers/data_request`
+
 Handles customer data requests.
 
 ### Root Endpoints
 
 #### `GET /`
+
 Returns landing page or app interface based on parameters.
 
 **Parameters:**
+
 - `shop` (optional): Shop domain
 - `embedded` (optional): Whether running in embedded context
 - `host` (optional): Host parameter for embedded apps
@@ -94,6 +109,7 @@ All API endpoints return appropriate HTTP status codes:
 - `500`: Internal Server Error
 
 Error responses include details:
+
 ```json
 {
   "error": "Error message",
@@ -104,6 +120,7 @@ Error responses include details:
 ## CORS Support
 
 All API endpoints include CORS headers for browser compatibility:
+
 - `Access-Control-Allow-Origin: *`
 - `Access-Control-Allow-Methods: GET, POST, OPTIONS`
 - `Access-Control-Allow-Headers: Content-Type, Authorization, X-API-Key`

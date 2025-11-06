@@ -9,7 +9,8 @@ export function createInstallRedirect(shop, env) {
 
 // Create Access Denied Page
 export function createAccessDeniedPage(shop) {
-  return new Response(`
+  return new Response(
+    `
     <!DOCTYPE html>
     <html>
     <head>
@@ -42,15 +43,18 @@ export function createAccessDeniedPage(shop) {
       </div>
     </body>
     </html>
-  `, {
-    headers: { 'Content-Type': 'text/html' },
-    status: 403,
-  });
+  `,
+    {
+      headers: { 'Content-Type': 'text/html' },
+      status: 403,
+    },
+  );
 }
 
 // Create Embedded App Interface
 export function createEmbeddedApp(shop, host, env) {
-  return new Response(`
+  return new Response(
+    `
     <!DOCTYPE html>
     <html>
     <head>
@@ -216,14 +220,17 @@ export function createEmbeddedApp(shop, host, env) {
       </div>
     </body>
     </html>
-  `, {
-    headers: { 'Content-Type': 'text/html' },
-  });
+  `,
+    {
+      headers: { 'Content-Type': 'text/html' },
+    },
+  );
 }
 
 // Create Landing Page
 export function createLandingPage() {
-  return new Response(`
+  return new Response(
+    `
     <!DOCTYPE html>
     <html>
     <head>
@@ -407,7 +414,9 @@ export function createLandingPage() {
       </div>
     </body>
     </html>
-  `, {
-    headers: { 'Content-Type': 'text/html' },
-  });
+  `,
+    {
+      headers: { 'Content-Type': 'text/html' },
+    },
+  );
 }

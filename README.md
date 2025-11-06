@@ -1,4 +1,3 @@
-
 # Shopify OAuth Worker
 
 A Cloudflare Worker that provides OAuth authentication and API gateway for browser extensions to connect with Shopify storefronts.
@@ -35,13 +34,14 @@ types/               # TypeScript definitions
 
 ## Quick Start
 
-
 1. **Clone the repository**
+
    ```bash
    cd shopify-oauth-worker/app
    ```
 
 2. **Create KV namespaces**
+
    ```bash
    wrangler kv:namespace create "SHOPS"
    wrangler kv:namespace create "AUTH_STATES"
@@ -49,23 +49,25 @@ types/               # TypeScript definitions
    ```
 
 3. **Update wrangler.toml**
-   
+
    Replace the namespace IDs with the ones you just created:
+
    ```toml
    [[kv_namespaces]]
    binding = "SHOPS"
    id = "YOUR_SHOPS_ID"
-   
+
    [[kv_namespaces]]
    binding = "AUTH_STATES"
    id = "YOUR_AUTH_STATES_ID"
-   
+
    [[kv_namespaces]]
    binding = "API_KEYS"
    id = "YOUR_API_KEYS_ID"
    ```
 
 4. **Set secrets**
+
    ```bash
    wrangler secret put SHOPIFY_API_KEY
    wrangler secret put SHOPIFY_API_SECRET
@@ -133,13 +135,13 @@ For detailed setup instructions, see [`deployment/setup.md`](deployment/setup.md
 
 ## API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/` | GET | App entry point (embedded or landing page) |
-| `/auth` | GET | Initiate OAuth flow |
-| `/auth/callback` | GET | OAuth callback handler |
-| `/api/auth` | POST | Generate API key for extensions |
-| `/api/proxy` | POST | Proxy requests to Shopify API |
+| Endpoint         | Method | Description                                |
+| ---------------- | ------ | ------------------------------------------ |
+| `/`              | GET    | App entry point (embedded or landing page) |
+| `/auth`          | GET    | Initiate OAuth flow                        |
+| `/auth/callback` | GET    | OAuth callback handler                     |
+| `/api/auth`      | POST   | Generate API key for extensions            |
+| `/api/proxy`     | POST   | Proxy requests to Shopify API              |
 
 ## Extension Integration
 
@@ -150,7 +152,7 @@ Browser extensions can connect using:
 const response = await fetch('https://your-worker.workers.dev/api/auth', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ shop: 'store.myshopify.com' })
+  body: JSON.stringify({ shop: 'store.myshopify.com' }),
 });
 
 const { api_key } = await response.json();
@@ -159,13 +161,13 @@ const { api_key } = await response.json();
 const products = await fetch('https://your-worker.workers.dev/api/proxy', {
   method: 'POST',
   headers: {
-    'Authorization': `Bearer ${api_key}`,
-    'Content-Type': 'application/json'
+    Authorization: `Bearer ${api_key}`,
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify({
     endpoint: '/products.json',
-    method: 'GET'
-  })
+    method: 'GET',
+  }),
 });
 ```
 
@@ -181,4 +183,3 @@ wrangler tail
 # Check KV storage
 wrangler kv key list --namespace-id=YOUR_NAMESPACE_ID
 ```
-

@@ -74,34 +74,91 @@ export declare class ConfigurationError extends Error {
 export declare function getCorsHeaders(): Record<string, string>;
 export declare function extractApiKey(request: Request): string | null;
 export declare function parseJsonBody(request: Request): Promise<any>;
-export declare function createJsonResponse(data: any, status: number, headers?: Record<string, string>): Response;
-export declare function buildShopifyAuthUrl(shop: string, clientId: string, scope: string, redirectUri: string, state: string): string;
+export declare function createJsonResponse(
+  data: any,
+  status: number,
+  headers?: Record<string, string>,
+): Response;
+export declare function buildShopifyAuthUrl(
+  shop: string,
+  clientId: string,
+  scope: string,
+  redirectUri: string,
+  state: string,
+): string;
 
 // Validation functions
 export declare function validateEnvironment(env: Environment): void;
 export declare function isValidShopDomain(shop: string): boolean;
-export declare function isValidEmbeddedContext(embedded: string, host: string, hmac: string): boolean;
+export declare function isValidEmbeddedContext(
+  embedded: string,
+  host: string,
+  hmac: string,
+): boolean;
 export declare function isValidHost(host: string, shop: string): boolean;
 export declare function checkInstallation(shop: string, env: Environment): Promise<boolean>;
 
 // HMAC functions
 export declare function timingSafeEqual(a: string, b: string): boolean;
-export declare function verifyShopifyHmac(params: URLSearchParams, secret: string): Promise<boolean>;
-export declare function verifyWebhookHmac(body: string, hmac: string, secret: string): Promise<boolean>;
+export declare function verifyShopifyHmac(
+  params: URLSearchParams,
+  secret: string,
+): Promise<boolean>;
+export declare function verifyWebhookHmac(
+  body: string,
+  hmac: string,
+  secret: string,
+): Promise<boolean>;
 
 // Shopify API functions
-export declare function exchangeCodeForToken(shop: string, code: string, env: Environment): Promise<TokenResponse>;
-export declare function storeShopData(shop: string, tokenData: TokenResponse, env: Environment): Promise<void>;
-export declare function registerMandatoryWebhooks(shop: string, accessToken: string, env: Environment): Promise<void>;
-export declare function proxyToShopify(shop: string, endpoint: string, method: string, data: any, accessToken: string, env: Environment): Promise<ShopifyApiResponse>;
+export declare function exchangeCodeForToken(
+  shop: string,
+  code: string,
+  env: Environment,
+): Promise<TokenResponse>;
+export declare function storeShopData(
+  shop: string,
+  tokenData: TokenResponse,
+  env: Environment,
+): Promise<void>;
+export declare function registerMandatoryWebhooks(
+  shop: string,
+  accessToken: string,
+  env: Environment,
+): Promise<void>;
+export declare function proxyToShopify(
+  shop: string,
+  endpoint: string,
+  method: string,
+  data: any,
+  accessToken: string,
+  env: Environment,
+): Promise<ShopifyApiResponse>;
 
 // Handler functions
-export declare function routeRequest(request: Request, url: URL, env: Environment, corsHeaders: Record<string, string>): Promise<Response>;
+export declare function routeRequest(
+  request: Request,
+  url: URL,
+  env: Environment,
+  corsHeaders: Record<string, string>,
+): Promise<Response>;
 export declare function handleOAuth(request: Request, env: Environment): Promise<Response>;
 export declare function handleOAuthCallback(request: Request, env: Environment): Promise<Response>;
-export declare function handleExtensionAuth(request: Request, env: Environment, corsHeaders: Record<string, string>): Promise<Response>;
-export declare function handleAPIProxy(request: Request, env: Environment, corsHeaders: Record<string, string>): Promise<Response>;
-export declare function handleWebhook(request: Request, env: Environment, topic: string): Promise<Response>;
+export declare function handleExtensionAuth(
+  request: Request,
+  env: Environment,
+  corsHeaders: Record<string, string>,
+): Promise<Response>;
+export declare function handleAPIProxy(
+  request: Request,
+  env: Environment,
+  corsHeaders: Record<string, string>,
+): Promise<Response>;
+export declare function handleWebhook(
+  request: Request,
+  env: Environment,
+  topic: string,
+): Promise<Response>;
 
 // Template functions
 export declare function createInstallRedirect(shop: string, env: Environment): Response;
